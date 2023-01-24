@@ -73,13 +73,31 @@ conjunctions = ["and then ","or ","but ","therefore ","in short ",
 wordPools = [enemies,people,things,battleTactics,actions,situations,
             places,directions,bodyParts,affinities,concepts,phrases]
 
+def stringGen():
+    #Select a random word from a random wordlist
+    wordList = wordPools[random.randint(0, len(wordPools)-1)]
+    word = wordList[random.randint(0, len(wordList)-1)]
+    #attach the random word to the templates
+    string = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
+        "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
+        "If only I had a "+word+"...","Didn't expect a "+word+"...","Visions of "+word+"...",
+        "Could this be a "+word+"?","Time for "+word,word+", O "+word,"Behold, "+word+"!",
+        "Offer "+word,"Praise the "+word,"Let there be "+word, "Ahh, "+word+"...",
+        word, word+"!",word+"?",word+"..."]
+    return string[random.randint(0, len(string)-1)]
+
+def conGen():
+    conj = conjunctions[random.randint(0,len(conjunctions)-1)]
+    if conj == ",":
+        return conj+"\n"
+    else:
+        return "\n"+conj
 
 @client.event
 async def on_ready():
     for guild in client.guilds:
         if guild.name == my_guild:
             break
-
     print(
         f"{client.user} is connected to the following guild:\n"
         f"{guild.name}(id: {guild.id})"
@@ -89,45 +107,18 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
     message_content = message.content.lower()
     if "!message" in message_content:
         
         #50-50 whether or not a conjunction should be used
         isConjunction = random.randint(0,1)
-
-        #Select a random word from a random wordlist
-        wordList = wordPools[random.randint(0, len(wordPools)-1)]
-        word = wordList[random.randint(0, len(wordList)-1)]
-
-        #attach the random word to the templates
-        string1 = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
-            "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
-            "If only I had a "+word+"...","Didn't expect a "+word+"...","Visions of "+word+"...",
-            "Could this be a "+word+"?","Time for "+word,word+", O "+word,"Behold, "+word+"!",
-            "Offer "+word,"Praise the "+word,"Let there be "+word, "Ahh, "+word+"...",
-            word, word+"!",word+"?",word+"..."]
-
-        #If conjunction should be used, repeats above procedure
+        #If conjunction should be used then it will add a conjunction and another string generator
         if isConjunction == 1:
-            conj = conjunctions[random.randint(0,len(conjunctions)-1)]
-            wordList = wordPools[random.randint(0, len(wordPools)-1)]
-            word = wordList[random.randint(0, len(wordList)-1)]
-
-            string2 = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
-                "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
-                "If only I had a "+word+"...","Didn't expect a "+word+"...","Visions of "+word+"...",
-                "Could this be a "+word+"?","Time for "+word,word+", O "+word,"Behold, "+word+"!",
-                "Offer "+word,"Praise the "+word,"Let there be "+word, "Ahh, "+word+"...",
-                word, word+"!",word+"?",word+"..."]
-            if conj == ",":
-                await message.channel.send(string1[random.randint(0, len(string1)-1)]+conj+"\n"+string2[random.randint(0, len(string1)-1)])
-                print(string1[random.randint(0, len(string1)-1)]+conj+"\n"+string2[random.randint(0, len(string1)-1)])
-            else:
-                await message.channel.send(string1[random.randint(0, len(string1)-1)]+"\n"+conj+string2[random.randint(0, len(string1)-1)])
-                print(string1[random.randint(0, len(string1)-1)]+"\n"+conj+string2[random.randint(0, len(string1)-1)])
+            messageString = stringGen()+conGen()+stringGen()
+        #If no conjunction, only one string generator function call is made
         else:
-            await message.channel.send(string1[random.randint(0, len(string1)-1)])
-            print(string1[random.randint(0, len(string1)-1)])
+            messageString = stringGen()
+        await message.channel.send(messageString)
+        print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
 
 client.run(token)
