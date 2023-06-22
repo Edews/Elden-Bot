@@ -1,9 +1,11 @@
 import os
 import random
 import discord
+from dotenv import load_dotenv
 
-token = os.getenv("DISCORD_TOKEN")
-my_guild = os.getenv("DISCORD_GUILD")
+load_dotenv()
+token = os.environ["DISCORD_TOKEN"]
+my_guild = os.environ["DISCORD_GUILD"]
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
