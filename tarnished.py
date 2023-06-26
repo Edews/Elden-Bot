@@ -75,10 +75,12 @@ conjunctions = ["and then ","or ","but ","therefore ","in short ",
 wordPools = [enemies,people,things,battleTactics,actions,situations,
             places,directions,bodyParts,affinities,concepts,phrases]
 
-def stringGen():
+def stringGen(word = ""):
     #Select a random word from a random wordlist
-    wordList = wordPools[random.randint(0, len(wordPools)-1)]
-    word = wordList[random.randint(0, len(wordList)-1)]
+    if(word == ""):
+        wordList = wordPools[random.randint(0, len(wordPools)-1)]
+        word = wordList[random.randint(0, len(wordList)-1)]
+
     #attach the random word to the templates
     string = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
         "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
@@ -97,20 +99,18 @@ def conGen():
 
 @client.event
 async def on_ready():
+    print(f"{client.user} is connected to the following guild:\n")
     for guild in client.guilds:
         if guild.name == my_guild:
             break
-    print(
-        f"{client.user} is connected to the following guild:\n"
-        f"{guild.name}(id: {guild.id})"
-    )
+        print(f"{guild.name} (id: {guild.id})")
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
     message_content = message.content.lower()
-    if "!message" in message_content:
+    if "!message" in message_content or "!msg" in message_content:
         
         #50-50 whether or not a conjunction should be used
         isConjunction = random.randint(0,1)
@@ -120,6 +120,29 @@ async def on_message(message):
         #If no conjunction, only one string generator function call is made
         else:
             messageString = stringGen()
+        await message.channel.send(messageString)
+        print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
+
+    if "!cmessage" in message_content or "!cmsg" in message_content:
+        customWord = ""
+        splitMessage = message_content.split(" ")
+        if(len(splitMessage) == 1):
+            return
+        for i in range(1, len(splitMessage)):
+            if i == 1:
+                customWord=customWord+splitMessage[i]
+            else:
+                customWord=f"{customWord} {splitMessage[i]}"
+
+        isConjunction = random.randint(0,1)
+        if isConjunction == 1:
+            conOrder = random.randint(0,1)
+            if conOrder == 0:
+                messageString = stringGen(customWord)+conGen()+stringGen()
+            else:
+                messageString = stringGen()+conGen()+stringGen(customWord)
+        else:
+            messageString = stringGen(customWord)
         await message.channel.send(messageString)
         print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
 
