@@ -125,7 +125,7 @@ async def on_message(message):
         print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
 
     if "!cmessage" in message_content or "!cmsg" in message_content:
-        splitMessage = re.split(' !cmessage | !cmsg ',message_content)
+        splitMessage = re.split(' !cmessage | !cmsg |!cmessage|!cmsg',message_content)
         customWord = splitMessage[-1]
 
         isConjunction = random.randint(0,1)
