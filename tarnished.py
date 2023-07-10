@@ -1,6 +1,7 @@
 import os
 import random
 import discord
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -124,15 +125,8 @@ async def on_message(message):
         print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
 
     if "!cmessage" in message_content or "!cmsg" in message_content:
-        customWord = ""
-        splitMessage = message_content.split(" ")
-        if(len(splitMessage) == 1):
-            return
-        for i in range(1, len(splitMessage)):
-            if i == 1:
-                customWord=customWord+splitMessage[i]
-            else:
-                customWord=f"{customWord} {splitMessage[i]}"
+        splitMessage = re.split(' !cmessage | !cmsg ',message_content)
+        customWord = splitMessage[-1]
 
         isConjunction = random.randint(0,1)
         if isConjunction == 1:
@@ -144,6 +138,7 @@ async def on_message(message):
         else:
             messageString = stringGen(customWord)
         await message.channel.send(messageString)
-        print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
+        # print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
+        print(message.author.name+" from \""+message.guild.name+"\" generated a custom message\n")
 
 client.run(token)
