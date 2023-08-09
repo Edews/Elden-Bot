@@ -74,7 +74,7 @@ def stringGen():
     #attach the random word to the templates
     string = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
         "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
-        "If only I had a "+word+"...","Didn't expect a "+word+"...","Visions of "+word+"...",
+        "If only I had a "+word+"...","Didn't expect "+word+"...","Visions of "+word+"...",
         "Could this be a "+word+"?","Time for "+word,word+", O "+word,"Behold, "+word+"!",
         "Offer "+word,"Praise the "+word,"Let there be "+word, "Ahh, "+word+"...",
         word, word+"!",word+"?",word+"..."]
