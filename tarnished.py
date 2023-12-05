@@ -85,7 +85,7 @@ def stringGen(word = ""):
     #attach the random word to the templates
     string = [word+" ahead", "No "+word+" ahead",word+" required ahead","Be wary of "+word,"Try "+word,
         "Likely "+word,"First off, "+word,"Seek "+word,"Still no "+word+"...","Why is it always "+word+"?",
-        "If only I had a "+word+"...","Didn't expect a "+word+"...","Visions of "+word+"...",
+        "If only I had a "+word+"...","Didn't expect "+word+"...","Visions of "+word+"...",
         "Could this be a "+word+"?","Time for "+word,word+", O "+word,"Behold, "+word+"!",
         "Offer "+word,"Praise the "+word,"Let there be "+word, "Ahh, "+word+"...",
         word, word+"!",word+"?",word+"..."]
@@ -125,8 +125,8 @@ async def on_message(message):
         print(message.author.name+" from \""+message.guild.name+"\" got the message \""+messageString+"\"\n")
 
     if "!cmessage" in message_content or "!cmsg" in message_content:
-        splitMessage = re.split(' !cmessage | !cmsg |!cmessage|!cmsg',message_content)
-        customWord = splitMessage[-1]
+        splitMessage = re.split('!cmessage|!cmsg',message_content)
+        customWord = splitMessage[-1].strip()
 
         isConjunction = random.randint(0,1)
         if isConjunction == 1:
